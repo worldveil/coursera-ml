@@ -35,6 +35,7 @@ hold on;
 % Labels and Legend
 xlabel('Microchip Test 1')
 ylabel('Microchip Test 2')
+title('Microchip Failure')
 
 % Specified in plot order
 legend('y = 1', 'y = 0')
@@ -87,7 +88,7 @@ pause;
 initial_theta = zeros(size(X, 2), 1);
 
 % Set regularization parameter lambda to 1 (you should vary this)
-lambda = 1;
+lambda = 0.001;
 
 % Set Options
 options = optimset('GradObj', 'on', 'MaxIter', 400);
