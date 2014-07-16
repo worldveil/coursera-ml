@@ -31,19 +31,15 @@ num_labels = 10;          % 10 labels, from 1 to 10
 
 % Load Training Data
 fprintf('Loading and Visualizing Data ...\n')
-
 load('ex4data1.mat');
 m = size(X, 1);
 
 % Randomly select 100 data points to display
+%{
 sel = randperm(size(X, 1));
 sel = sel(1:100);
-
 displayData(X(sel, :));
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
+%}
 
 %% ================ Part 2: Loading Parameters ================
 % In this part of the exercise, we load some pre-initialized 
