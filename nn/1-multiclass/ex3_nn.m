@@ -36,14 +36,13 @@ fprintf('Loading and Visualizing Data ...\n')
 load('ex3data1.mat');
 m = size(X, 1);
 
+% uncomment to display digits
 % Randomly select 100 data points to display
-sel = randperm(size(X, 1));
-sel = sel(1:100);
-
-displayData(X(sel, :));
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+%sel = randperm(size(X, 1));
+%sel = sel(1:100);
+%displayData(X(sel, :));
+%fprintf('Program paused. Press enter to continue.\n');
+%pause;
 
 %% ================ Part 2: Loading Pameters ================
 % In this part of the exercise, we load some pre-initialized 
@@ -64,16 +63,16 @@ pred = predict(Theta1, Theta2, X);
 
 fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == y)) * 100);
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+%fprintf('Program paused. Press enter to continue.\n');
+%pause;
 
 %  To give you an idea of the network's output, you can also run
 %  through the examples one at the a time to see what it is predicting.
 
 %  Randomly permute examples
+%{
 rp = randperm(m);
-
-for i = 1:m
+for i = 1 : m
     % Display 
     fprintf('\nDisplaying Example Image\n');
     displayData(X(rp(i), :));
@@ -85,4 +84,4 @@ for i = 1:m
     fprintf('Program paused. Press enter to continue.\n');
     pause;
 end
-
+%}
