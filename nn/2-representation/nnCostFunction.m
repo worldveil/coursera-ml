@@ -21,12 +21,8 @@ function [J grad] = nnCostFunction(nn_params, ...
 
     Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
                      num_labels, (hidden_layer_size + 1));
-
-    % Setup some useful variables
-    m = size(X, 1);
-
-    % You need to return the following variables correctly 
-    J = 0;
+    
+    n = size(X, 1); 
     Theta1_grad = zeros(size(Theta1));
     Theta2_grad = zeros(size(Theta2));
 
@@ -60,14 +56,51 @@ function [J grad] = nnCostFunction(nn_params, ...
     %               backpropagation. That is, you can compute the gradients for
     %               the regularization separately and then add them to Theta1_grad
     %               and Theta2_grad from Part 2.
-    %
-    
-    % TODO: parts 1-3 ...
-    
     % =========================================================================
 
+    % compute gradients
+    Theta1_grad = sigmoidGradient(Theta1);
+    Theta2_grad = sigmoidGradient(Theta2);
+    
     % Unroll gradients
     grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
-
+    
+    %===================
+    
+    % add bias units
+    X = [ones(n, 1) X];
+    
+    % mutliply to get output activations
+    htheta1x = sigmoid(X * Theta1');
+    htheta1x = [ones(n, 1) htheta1x];
+    hthetax = sigmoid(htheta1x * Theta2');
+    
+    % expand the y vector into a binary vector with 
+    % only a single 1 set
+    y_expanded = zeros(n, num_labels);
+    for i = 1 : n
+        y_expanded(i, y(i)) = 1;
+    end
+    
+    % for each h(x), compute contribution to cost
+    cost = 0;
+    for i = 1 : n  % for each example
+        for k = 1 : num_labels  % for each example           
+            cost = cost - ...
+                y_expanded(i, k) * log(hthetax(i, k)) - ...
+                (1 - y_expanded(i, k)) * log(1 - hthetax(i, k));
+        end
+    end
+    J = cost / n;
+    
+    % compute regularization term
+    regularization = 0;
+    regularization = regularization + ...
+        lambda / 2 / n * sum(sum(Theta1(:, 2:end) .^ 2));
+    regularization = regularization + ...
+        lambda / 2 / n * sum(sum(Theta2(:, 2:end) .^ 2));
+    
+    % add in regularization
+    J = J + regularization;
+    
 end
