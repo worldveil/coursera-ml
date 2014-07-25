@@ -201,10 +201,6 @@ Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
 Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
                  num_labels, (hidden_layer_size + 1));
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
-
 %% ================= Part 9: Visualize Weights =================
 %  You can now "visualize" what the neural network is learning by 
 %  displaying the hidden units to see what features they are capturing in 
@@ -213,9 +209,6 @@ pause;
 fprintf('\nVisualizing Neural Network... \n')
 
 displayData(Theta1(:, 2:end));
-
-fprintf('\nProgram paused. Press enter to continue.\n');
-pause;
 
 %% ================= Part 10: Implement Predict =================
 %  After training the neural network, we would like to use it to predict

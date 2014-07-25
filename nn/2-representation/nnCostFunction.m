@@ -1,4 +1,4 @@
-function [J grad] = nnCostFunction(nn_params, ...
+function [J, grad] = nnCostFunction(nn_params, ...
                                    input_layer_size, ...
                                    hidden_layer_size, ...
                                    num_labels, ...
@@ -58,22 +58,21 @@ function [J grad] = nnCostFunction(nn_params, ...
     %               and Theta2_grad from Part 2.
     % =========================================================================
 
-    % compute gradients
-    Theta1_grad = sigmoidGradient(Theta1);
-    Theta2_grad = sigmoidGradient(Theta2);
     
-    % Unroll gradients
-    grad = [Theta1_grad(:) ; Theta2_grad(:)];
-    
-    %===================
+    %================PART 1================%
+    % Feedforward to find the cost of the network given
+    % the examples and theta matrices.
     
     % add bias units
     X = [ones(n, 1) X];
     
-    % mutliply to get output activations
-    htheta1x = sigmoid(X * Theta1');
-    htheta1x = [ones(n, 1) htheta1x];
-    hthetax = sigmoid(htheta1x * Theta2');
+    % mutliply to get output activations and linear combination z's
+    z2 = X * Theta1';
+    a2 = sigmoid(z2);
+    a2 = [ones(n, 1) a2];
+    z3 = a2 * Theta2';
+    a3 = sigmoid(z3);
+    hthetax = a3;
     
     % expand the y vector into a binary vector with 
     % only a single 1 set
@@ -83,9 +82,10 @@ function [J grad] = nnCostFunction(nn_params, ...
     end
     
     % for each h(x), compute contribution to cost
+    % TODO: vectorize this!
     cost = 0;
     for i = 1 : n  % for each example
-        for k = 1 : num_labels  % for each example           
+        for k = 1 : num_labels  % for each class           
             cost = cost - ...
                 y_expanded(i, k) * log(hthetax(i, k)) - ...
                 (1 - y_expanded(i, k)) * log(1 - hthetax(i, k));
@@ -93,12 +93,45 @@ function [J grad] = nnCostFunction(nn_params, ...
     end
     J = cost / n;
     
+    %================PART 2================%
+    % Implement backpropagation and fill the grad
+    % vector with the unrolled matrices
+    
+    Delta2 = zeros(size(Theta2, 1), size(Theta2, 2));
+    Delta1 = zeros(size(Theta1, 1), size(Theta1, 2));
+    
+    for t = 1 : n
+        a1 = X(t, :);
+        delta3 = a3(t, :) - y_expanded(t, :);
+        delta2 = (Theta2' * delta3') .* a2(t, :)' .* (1 - a2(t, :)');
+        Delta2 = Delta2 + delta3' * a2(t, :);
+        Delta1 = Delta1 + delta2(2:end) * a1;
+    end
+    
+    % don't use the theta bias terms, set them to 0
+    copyTheta1 = Theta1;
+    copyTheta1(:, 1) = 0;
+    copyTheta2 = Theta2;
+    copyTheta2(:, 1) = 0;
+    
+    % set accumulators equal to sum plus the regularization matrix, divided
+    % by the number of examples
+    Delta2 = (Delta2 + lambda * copyTheta2) / n;
+    Delta1 = (Delta1 + lambda * copyTheta1) / n;
+    
+    % Gradients:
+    % note the size of each gradient includes an extra +1 for the
+    % bias term
+    grad = [Delta1(:) ; Delta2(:)];
+    
+    %================PART 3================%
+    % Add in the regularization term to the cost
+    
     % compute regularization term
-    regularization = 0;
-    regularization = regularization + ...
-        lambda / 2 / n * sum(sum(Theta1(:, 2:end) .^ 2));
-    regularization = regularization + ...
-        lambda / 2 / n * sum(sum(Theta2(:, 2:end) .^ 2));
+    regularization = lambda / 2 / n * ( ... 
+        sum(sum(Theta1(:, 2:end) .^ 2)) + ...
+        sum(sum(Theta2(:, 2:end) .^ 2)) ...
+    );
     
     % add in regularization
     J = J + regularization;
