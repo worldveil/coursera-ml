@@ -34,8 +34,8 @@ load('ex6data1.mat');
 % Plot training data
 plotData(X, y);
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+%fprintf('Program paused. Press enter to continue.\n');
+%pause;
 
 %% ==================== Part 2: Training Linear SVM ====================
 %  The following code will train a linear SVM on the dataset and plot the
@@ -50,12 +50,12 @@ fprintf('\nTraining Linear SVM ...\n')
 
 % You should try to change the C value below and see how the decision
 % boundary varies (e.g., try C = 1000)
-C = 1;
+C = 0.1;
 model = svmTrain(X, y, C, @linearKernel, 1e-3, 20);
 visualizeBoundaryLinear(X, y, model);
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+%fprintf('Program paused. Press enter to continue.\n');
+%pause;
 
 %% =============== Part 3: Implementing Gaussian Kernel ===============
 %  You will now implement the Gaussian kernel to use
@@ -69,8 +69,8 @@ sim = gaussianKernel(x1, x2, sigma);
 fprintf(['Gaussian Kernel between x1 = [1; 2; 1], x2 = [0; 4; -1], sigma = 0.5 :' ...
          '\n\t%f\n(this value should be about 0.324652)\n'], sim);
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+%fprintf('Program paused. Press enter to continue.\n');
+%pause;
 
 %% =============== Part 4: Visualizing Dataset 2 ================
 %  The following code will load the next dataset into your environment and 
@@ -105,7 +105,7 @@ C = 1; sigma = 0.1;
 % We set the tolerance and max_passes lower here so that the code will run
 % faster. However, in practice, you will want to run the training to
 % convergence.
-model= svmTrain(X, y, C, @(x1, x2) gaussianKernel(x1, x2, sigma)); 
+model = svmTrain(X, y, C, @(x1, x2) gaussianKernel(x1, x2, sigma)); 
 visualizeBoundary(X, y, model);
 
 fprintf('Program paused. Press enter to continue.\n');
