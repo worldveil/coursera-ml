@@ -43,8 +43,8 @@ fprintf('Closest centroids for the first 3 examples: \n')
 fprintf(' %d', idx(1:3));
 fprintf('\n(the closest centroids should be 1, 3, 2 respectively)\n');
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+%fprintf('Program paused. Press enter to continue.\n');
+%pause;
 
 %% ===================== Part 2: Compute Means =========================
 %  After implementing the closest centroids function, you should now
@@ -62,8 +62,8 @@ fprintf('   [ 2.428301 3.157924 ]\n');
 fprintf('   [ 5.813503 2.633656 ]\n');
 fprintf('   [ 7.119387 3.616684 ]\n\n');
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+%fprintf('Program paused. Press enter to continue.\n');
+%pause;
 
 
 %% =================== Part 3: K-Means Clustering ======================
@@ -109,7 +109,7 @@ fprintf('\nRunning K-Means clustering on pixels from an image.\n\n');
 A = double(imread('bird_small.png'));
 
 % If imread does not work for you, you can try instead
-%   load ('bird_small.mat');
+load ('bird_small.mat');
 
 A = A / 255; % Divide by 255 so that all values are in the range 0 - 1
 
