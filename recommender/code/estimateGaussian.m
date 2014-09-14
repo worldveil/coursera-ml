@@ -19,5 +19,7 @@ function [mu, sigma2] = estimateGaussian(X)
     %               the data for the i-th feature and sigma2(i)
     %               should contain variance of the i-th feature.
     mu = mean(X);
-    sigma2 = var(X);
+    subtract = bsxfun(@minus, X, mu);
+    squared = subtract .^ 2;
+    sigma2 = sum(squared) / m;
 end
